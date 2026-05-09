@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.pyo
+bot/state.json
+bot/scheduler.log
+.env
