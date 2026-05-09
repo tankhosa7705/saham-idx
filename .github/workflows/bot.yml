@@ -1,0 +1,39 @@
+name: Saham IDX Alert Bot
+
+on:
+  schedule:
+    # Bursa IDX: Senin-Jumat 09:00-16:00 WIT (UTC+9)
+    # Cek setiap jam 00:00-07:00 UTC = 09:00-16:00 WIT
+    - cron: '0 0,1,2,3,4,5,6,7 * * 1-5'
+  workflow_dispatch:  # Bisa trigger manual dari GitHub
+
+jobs:
+  check-signals:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout kode
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Restore state bot (sinyal sebelumnya)
+        uses: actions/cache@v4
+        with:
+          path: bot/state.json
+          key: bot-state-${{ github.run_id }}
+          restore-keys: |
+            bot-state-
+
+      - name: Install dependencies
+        run: pip install yfinance pandas numpy ta requests schedule
+
+      - name: Jalankan cek sinyal
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scheduler_once.py
