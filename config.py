@@ -10,6 +10,7 @@ TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID', '8672645047')
 WATCH_LIST = [
     'BBCA', 'BBRI', 'BMRI', 'TLKM', 'ASII',
     'UNVR', 'KLBF', 'ADRO', 'PTBA', 'ANTM',
+    'BBNI', 'BRIS', 'PGAS', 'BSDE', 'JPFA',
 ]
 
 # ── Pengaturan ────────────────────────────────────────────────
