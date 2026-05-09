@@ -31,7 +31,8 @@ IDX_STOCKS = {
     'ANTM': 'Aneka Tambang',
     'INCO': 'Vale Indonesia',
     'MDKA': 'Merdeka Copper Gold',
-    # Infrastruktur
+    'ISAT': 'Indosat Ooredoo Hutchison',
+    # Infrastruktur & Telko
     'JSMR': 'Jasa Marga',
     'PGAS': 'PGN',
     'SMGR': 'Semen Indonesia',
@@ -49,6 +50,7 @@ IDX_STOCKS = {
     'ULTJ': 'Ultra Jaya Milk',
     'HMSP': 'HM Sampoerna',
     'GGRM': 'Gudang Garam',
+    'EXCL': 'XL Axiata',
 }
 
 

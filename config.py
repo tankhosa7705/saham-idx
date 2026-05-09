@@ -11,6 +11,7 @@ WATCH_LIST = [
     'BBCA', 'BBRI', 'BMRI', 'TLKM', 'ASII',
     'UNVR', 'KLBF', 'ADRO', 'PTBA', 'ANTM',
     'BBNI', 'BRIS', 'PGAS', 'BSDE', 'JPFA',
+    'MDKA', 'INCO', 'TOWR', 'ISAT', 'MAPI',
 ]
 
 # ── Pengaturan ────────────────────────────────────────────────
