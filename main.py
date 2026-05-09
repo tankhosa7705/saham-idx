@@ -13,6 +13,7 @@ from analysis.signal import generate_signals, get_latest_signal
 from screener.screener import screen_stocks
 from forecast.prophet_model import run_prophet_forecast
 from forecast.xgb_model import run_xgb_forecast
+from forecast.ensemble_model import run_ensemble_forecast
 
 # ── Page config ──────────────────────────────────────────────
 st.set_page_config(
@@ -323,7 +324,7 @@ with tab_fc:
     with c3:
         fc_days = st.selectbox("Forecast (hari ke depan)", [7, 14, 30, 60], index=1)
     with c4:
-        fc_model = st.selectbox("Model", ['XGBoost', 'Prophet', 'Keduanya'])
+        fc_model = st.selectbox("Model", ['Ensemble', 'XGBoost', 'Prophet', 'Keduanya'])
 
     if st.button("🔮 Jalankan Forecast", type="primary", use_container_width=True):
         with st.spinner(f"Mengambil data {fc_ticker}…"):
@@ -345,6 +346,63 @@ with tab_fc:
             ))
 
             xgb_fc = prophet_fc = None
+
+            # ── Ensemble ─────────────────────────────────────
+            if fc_model == 'Ensemble':
+                with st.spinner("Melatih Ensemble (XGBoost + Prophet)…"):
+                    xgb_fc, prophet_fc, ens_fc, ens_acc, xgb_fi = run_ensemble_forecast(df_fc, fc_days)
+
+                if ens_fc is not None:
+                    # Garis individual (tipis, transparan)
+                    fig_fc.add_trace(go.Scatter(
+                        x=ens_fc['ds'], y=ens_fc['yhat_xgb'],
+                        name='XGBoost', line=dict(color='#69f0ae', width=1.2, dash='dot'),
+                        opacity=0.6,
+                    ))
+                    fig_fc.add_trace(go.Scatter(
+                        x=ens_fc['ds'], y=ens_fc['yhat_prophet'],
+                        name='Prophet', line=dict(color='#ffb74d', width=1.2, dash='dot'),
+                        opacity=0.6,
+                    ))
+                    # Confidence band dari Prophet
+                    x_band = pd.concat([ens_fc['ds'], ens_fc['ds'].iloc[::-1]])
+                    y_band = pd.concat([ens_fc['yhat_upper'], ens_fc['yhat_lower'].iloc[::-1]])
+                    fig_fc.add_trace(go.Scatter(
+                        x=x_band, y=y_band, fill='toself',
+                        fillcolor='rgba(255,255,255,0.05)',
+                        line=dict(color='rgba(0,0,0,0)'), name='CI',
+                    ))
+                    # Garis ensemble (tebal)
+                    fig_fc.add_trace(go.Scatter(
+                        x=ens_fc['ds'], y=ens_fc['yhat'],
+                        name='Ensemble', line=dict(color='#e040fb', width=2.5),
+                    ))
+
+                    e1, e2, e3, e4 = st.columns(4)
+                    e1.metric("Ensemble MAE",  f"Rp {ens_acc.get('MAE', 0):,.0f}")
+                    e2.metric("Ensemble MAPE", f"{ens_acc.get('MAPE', 0):.2f}%")
+                    e3.metric("Bobot XGBoost", f"{ens_acc.get('XGB_weight', 0):.1f}%")
+                    e4.metric("Bobot Prophet", f"{ens_acc.get('Prophet_weight', 0):.1f}%")
+
+                    if xgb_fi is not None:
+                        with st.expander("Feature Importance XGBoost"):
+                            st.dataframe(xgb_fi, use_container_width=True)
+
+                    # Tabel ensemble
+                    st.subheader("Tabel Prediksi Ensemble")
+                    out_ens = ens_fc[['ds', 'yhat_xgb', 'yhat_prophet', 'yhat']].copy()
+                    out_ens['ds'] = pd.to_datetime(out_ens['ds']).dt.strftime('%Y-%m-%d')
+                    out_ens.columns = ['Tanggal', 'XGBoost', 'Prophet', 'Ensemble']
+                    st.dataframe(
+                        out_ens.style.format({
+                            'XGBoost':  'Rp {:,.0f}',
+                            'Prophet':  'Rp {:,.0f}',
+                            'Ensemble': 'Rp {:,.0f}',
+                        }),
+                        use_container_width=True,
+                    )
+                else:
+                    st.error(f"Ensemble gagal: {ens_acc.get('error', 'Unknown error')}")
 
             # ── XGBoost ──────────────────────────────────────
             if fc_model in ('XGBoost', 'Keduanya'):
