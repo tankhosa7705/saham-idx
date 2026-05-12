@@ -3,60 +3,52 @@ import numpy as np
 
 
 def generate_signals(df: pd.DataFrame) -> pd.DataFrame:
-    """Generate sinyal BUY/SELL/HOLD berdasarkan kombinasi indikator teknikal."""
+    """Generate sinyal BUY/SELL/HOLD berdasarkan posisi indikator (persistent scoring)."""
     df = df.copy()
     score = pd.Series(0.0, index=df.index)
 
     close = df['Close'].squeeze()
 
-    # 1. Golden Cross / Death Cross (MA20 vs MA50) — bobot 2
+    # 1. MA Trend — MA20 vs MA50 (bobot 1.5)
     if 'MA20' in df and 'MA50' in df:
         ma20, ma50 = df['MA20'].squeeze(), df['MA50'].squeeze()
-        df['Golden_Cross'] = (ma20 > ma50) & (ma20.shift(1) <= ma50.shift(1))
-        df['Death_Cross']  = (ma20 < ma50) & (ma20.shift(1) >= ma50.shift(1))
-        score += df['Golden_Cross'].astype(float) * 2
-        score -= df['Death_Cross'].astype(float) * 2
-        score += ((ma20 > ma50).astype(float) - 0.5) * 0.5  # trend bias
+        score += (ma20 > ma50).astype(float) * 1.5
+        score -= (ma20 < ma50).astype(float) * 1.5
 
-    # 2. RSI — bobot 2 saat crossover, +0.5 trend bias
+    # 2. RSI level (bobot 2.0 di zona ekstrem, 0.5 di zona menengah)
     if 'RSI' in df:
         rsi = df['RSI'].squeeze()
-        df['RSI_Buy']  = (rsi < 30) & (rsi.shift(1) >= 30)
-        df['RSI_Sell'] = (rsi > 70) & (rsi.shift(1) <= 70)
-        score += df['RSI_Buy'].astype(float) * 2
-        score -= df['RSI_Sell'].astype(float) * 2
-        score += ((rsi > 50).astype(float) - 0.5) * 0.5
+        score += (rsi < 30).astype(float) * 2.0           # oversold kuat
+        score += ((rsi >= 30) & (rsi < 45)).astype(float) * 0.5  # oversold ringan
+        score -= ((rsi > 55) & (rsi <= 70)).astype(float) * 0.5  # overbought ringan
+        score -= (rsi > 70).astype(float) * 2.0           # overbought kuat
 
-    # 3. MACD crossover — bobot 1.5
+    # 3. MACD posisi vs signal line (bobot 1.0)
     if 'MACD' in df and 'MACD_signal' in df:
         macd, sig = df['MACD'].squeeze(), df['MACD_signal'].squeeze()
-        df['MACD_Buy']  = (macd > sig) & (macd.shift(1) <= sig.shift(1))
-        df['MACD_Sell'] = (macd < sig) & (macd.shift(1) >= sig.shift(1))
-        score += df['MACD_Buy'].astype(float) * 1.5
-        score -= df['MACD_Sell'].astype(float) * 1.5
-        score += ((macd > sig).astype(float) - 0.5) * 0.3
+        score += (macd > sig).astype(float) * 1.0
+        score -= (macd < sig).astype(float) * 1.0
 
-    # 4. Bollinger Bands — bobot 1
+    # 4. Bollinger Bands (bobot 1.0)
     if 'BB_lower' in df and 'BB_upper' in df:
-        df['BB_Buy']  = close < df['BB_lower'].squeeze()
-        df['BB_Sell'] = close > df['BB_upper'].squeeze()
-        score += df['BB_Buy'].astype(float)
-        score -= df['BB_Sell'].astype(float)
+        score += (close < df['BB_lower'].squeeze()).astype(float) * 1.0
+        score -= (close > df['BB_upper'].squeeze()).astype(float) * 1.0
 
-    # 5. Price vs MA50 — bobot 0.5
+    # 5. Price vs MA50 (bobot 0.5, hanya kalau selisih >2%)
     if 'MA50' in df:
-        above_ma50 = close > df['MA50'].squeeze()
-        score += (above_ma50.astype(float) - 0.5) * 0.5
+        vs_ma50 = (close - df['MA50'].squeeze()) / df['MA50'].squeeze()
+        score += (vs_ma50 > 0.02).astype(float) * 0.5
+        score -= (vs_ma50 < -0.02).astype(float) * 0.5
 
-    # 6. Volume confirmation — amplifikasi jika volume tinggi
+    # 6. Volume confirmation — amplifikasi 20% jika volume tinggi
     if 'Volume_ratio' in df:
         high_vol = df['Volume_ratio'].squeeze() > 1.5
-        score = score * (1 + high_vol.astype(float) * 0.25)
+        score = score * (1 + high_vol.astype(float) * 0.2)
 
     df['Signal_Score'] = score
     df['Signal'] = 'HOLD'
-    df.loc[score >= 2.0,  'Signal'] = 'BUY'
-    df.loc[score <= -2.0, 'Signal'] = 'SELL'
+    df.loc[score >= 2.5,  'Signal'] = 'BUY'
+    df.loc[score <= -2.5, 'Signal'] = 'SELL'
 
     return df
 
@@ -67,29 +59,47 @@ def get_latest_signal(df: pd.DataFrame) -> dict:
         return {}
 
     row = df.iloc[-1]
-    reasons = []
+    rsi      = float(row.get('RSI', 50) or 50)
+    close    = float(row.get('Close', 0) or 0)
+    ma20     = float(row.get('MA20', 0) or 0)
+    ma50     = float(row.get('MA50', 0) or 0)
+    macd     = float(row.get('MACD', 0) or 0)
+    macd_sig = float(row.get('MACD_signal', 0) or 0)
+    bb_lower = float(row.get('BB_lower', 0) or 0)
+    bb_upper = float(row.get('BB_upper', 0) or 0)
 
-    for col, msg in [
-        ('Golden_Cross', 'Golden Cross — MA20 melewati MA50 ke atas'),
-        ('Death_Cross',  'Death Cross — MA20 melewati MA50 ke bawah'),
-        ('RSI_Buy',      f"RSI Oversold ({row.get('RSI', 0):.1f})"),
-        ('RSI_Sell',     f"RSI Overbought ({row.get('RSI', 0):.1f})"),
-        ('MACD_Buy',     'MACD Bullish Crossover'),
-        ('MACD_Sell',    'MACD Bearish Crossover'),
-        ('BB_Buy',       'Harga di bawah Lower Bollinger Band'),
-        ('BB_Sell',      'Harga di atas Upper Bollinger Band'),
-    ]:
-        if row.get(col, False):
-            reasons.append(msg)
+    reasons = []
+    if ma20 and ma50:
+        if ma20 > ma50:
+            reasons.append(f'MA20 di atas MA50 (uptrend)')
+        else:
+            reasons.append(f'MA20 di bawah MA50 (downtrend)')
+
+    if rsi < 30:
+        reasons.append(f'RSI Oversold ({rsi:.1f})')
+    elif rsi > 70:
+        reasons.append(f'RSI Overbought ({rsi:.1f})')
+    elif rsi < 45:
+        reasons.append(f'RSI recovering dari oversold ({rsi:.1f})')
+
+    if macd > macd_sig:
+        reasons.append('MACD di atas Signal (momentum bullish)')
+    elif macd < macd_sig:
+        reasons.append('MACD di bawah Signal (momentum bearish)')
+
+    if bb_lower and close < bb_lower:
+        reasons.append('Harga di bawah Lower Bollinger Band')
+    elif bb_upper and close > bb_upper:
+        reasons.append('Harga di atas Upper Bollinger Band')
 
     return {
         'signal':      row.get('Signal', 'HOLD'),
         'score':       float(row.get('Signal_Score', 0)),
-        'rsi':         float(row.get('RSI', 0)),
-        'macd':        float(row.get('MACD', 0)),
-        'macd_signal': float(row.get('MACD_signal', 0)),
-        'close':       float(row.get('Close', 0)),
-        'ma20':        float(row.get('MA20', 0)),
-        'ma50':        float(row.get('MA50', 0)),
+        'rsi':         rsi,
+        'macd':        macd,
+        'macd_signal': macd_sig,
+        'close':       close,
+        'ma20':        ma20,
+        'ma50':        ma50,
         'reasons':     reasons,
     }
