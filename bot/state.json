@@ -1,0 +1,102 @@
+{
+  "BBCA": {
+    "signal": "HOLD",
+    "price": 6025.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "BBRI": {
+    "signal": "SELL",
+    "price": 3070.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "BMRI": {
+    "signal": "HOLD",
+    "price": 4140.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "TLKM": {
+    "signal": "HOLD",
+    "price": 3100.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "ASII": {
+    "signal": "BUY",
+    "price": 5950.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "UNVR": {
+    "signal": "HOLD",
+    "price": 1730.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "KLBF": {
+    "signal": "SELL",
+    "price": 825.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "ADRO": {
+    "signal": "HOLD",
+    "price": 2310.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "PTBA": {
+    "signal": "HOLD",
+    "price": 2730.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "ANTM": {
+    "signal": "HOLD",
+    "price": 2950.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "BBNI": {
+    "signal": "BUY",
+    "price": 3810.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "BRIS": {
+    "signal": "HOLD",
+    "price": 1785.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "PGAS": {
+    "signal": "HOLD",
+    "price": 1790.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "BSDE": {
+    "signal": "HOLD",
+    "price": 720.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "JPFA": {
+    "signal": "BUY",
+    "price": 2500.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "MDKA": {
+    "signal": "HOLD",
+    "price": 2500.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "INCO": {
+    "signal": "BUY",
+    "price": 4710.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "TOWR": {
+    "signal": "HOLD",
+    "price": 432.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "ISAT": {
+    "signal": "HOLD",
+    "price": 2330.0,
+    "last_check": "2026-05-19 14:55"
+  },
+  "MAPI": {
+    "signal": "BUY",
+    "price": 1490.0,
+    "last_check": "2026-05-19 14:55"
+  }
+}
