@@ -83,20 +83,32 @@ def get_gold_price_idr(usd_idr: float) -> float:
 
 
 def get_crypto_ohlcv(coin_id: str, days: int = 90) -> pd.DataFrame:
-    """OHLCV crypto dari CoinGecko (gratis, tanpa API key)."""
+    """Data harian crypto dari CoinGecko market_chart (close + volume nyata)."""
     try:
         r = requests.get(
-            f"{COINGECKO_BASE}/coins/{coin_id}/ohlc",
-            params={'vs_currency': 'usd', 'days': days},
+            f"{COINGECKO_BASE}/coins/{coin_id}/market_chart",
+            params={'vs_currency': 'usd', 'days': days, 'interval': 'daily'},
             headers=_HEADERS, timeout=15
         )
         r.raise_for_status()
         data = r.json()
-        df = pd.DataFrame(data, columns=['timestamp', 'Open', 'High', 'Low', 'Close'])
+
+        prices  = data.get('prices', [])
+        volumes = data.get('total_volumes', [])
+
+        df_p = pd.DataFrame(prices,  columns=['timestamp', 'Close'])
+        df_v = pd.DataFrame(volumes, columns=['timestamp', 'Volume'])
+        df   = df_p.merge(df_v, on='timestamp', how='left')
+
         df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
         df = df.set_index('timestamp')
-        df['Volume'] = 0.0
-        return df.dropna()
+
+        # Konstruksi OHLC dari close harian (High/Low approx)
+        df['Open']  = df['Close'].shift(1)
+        df['High']  = df[['Open', 'Close']].max(axis=1)
+        df['Low']   = df[['Open', 'Close']].min(axis=1)
+
+        return df[['Open', 'High', 'Low', 'Close', 'Volume']].dropna()
     except Exception:
         return pd.DataFrame()
 
