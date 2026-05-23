@@ -17,3 +17,9 @@ WATCH_LIST = [
 # ── Pengaturan ────────────────────────────────────────────────
 CHECK_INTERVAL_MINUTES = 60
 DATA_PERIOD            = '3mo'
+
+# ── Pluang watchlist ──────────────────────────────────────────
+PLUANG_WATCHLIST = {
+    'crypto':    ['BTC', 'ETH', 'SOL', 'BNB', 'ADA', 'AVAX'],
+    'us_stocks': ['AAPL', 'MSFT', 'NVDA', 'AMZN', 'GOOGL', 'META', 'TSLA'],
+}

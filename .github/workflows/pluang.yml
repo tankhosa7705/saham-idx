@@ -1,0 +1,46 @@
+name: Pluang Asset Bot
+
+on:
+  schedule:
+    # Setiap jam — crypto 24/7, US market 14:00-22:00 UTC, emas ikut US market
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  check-pluang:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout kode
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install yfinance pandas numpy ta requests
+
+      - name: Jalankan cek Pluang
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scheduler_pluang.py
+
+      - name: Simpan state ke repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add bot/state_pluang.json bot/portfolio.json bot/price_targets.json
+          git diff --cached --quiet || git commit -m "chore: update pluang state [skip ci]"
+          git push
