@@ -1,51 +1,51 @@
 {
   "XAUUSD": {
     "signal": "SELL",
-    "price_usd_oz": 4215.60009765625,
-    "price_idr_gram": 2421325.4374790266,
-    "last_check": "2026-06-12 12:56"
+    "price_usd_oz": 4244.7998046875,
+    "price_idr_gram": 2445057.0932782884,
+    "last_check": "2026-06-12 16:25"
   },
   "AAPL": {
     "signal": "HOLD",
-    "price_usd": 295.6300048828125,
-    "price_idr": 5281430.037231445,
-    "last_check": "2026-06-12 12:56"
+    "price_usd": 291.6050109863281,
+    "price_idr": 5224395.376831055,
+    "last_check": "2026-06-12 16:25"
   },
   "MSFT": {
     "signal": "HOLD",
-    "price_usd": 390.3399963378906,
-    "price_idr": 6973424.034576416,
-    "last_check": "2026-06-12 12:56"
+    "price_usd": 388.0400085449219,
+    "price_idr": 6952124.79309082,
+    "last_check": "2026-06-12 16:25"
   },
   "NVDA": {
     "signal": "HOLD",
-    "price_usd": 204.8699951171875,
-    "price_idr": 3660002.4627685547,
-    "last_check": "2026-06-12 12:56"
+    "price_usd": 204.8863983154297,
+    "price_idr": 3670744.7122192383,
+    "last_check": "2026-06-12 16:25"
   },
   "AMZN": {
     "signal": "HOLD",
-    "price_usd": 241.50999450683594,
-    "price_idr": 4314576.051864624,
-    "last_check": "2026-06-12 12:56"
+    "price_usd": 236.35000610351562,
+    "price_idr": 4234446.709350586,
+    "last_check": "2026-06-12 16:25"
   },
   "GOOGL": {
     "signal": "HOLD",
-    "price_usd": 357.7699890136719,
-    "price_idr": 6391560.853729248,
-    "last_check": "2026-06-12 12:56"
+    "price_usd": 361.45001220703125,
+    "price_idr": 6475738.418701172,
+    "last_check": "2026-06-12 16:25"
   },
   "META": {
-    "signal": "HOLD",
-    "price_usd": 568.4299926757812,
-    "price_idr": 10155001.819152832,
-    "last_check": "2026-06-12 12:56"
+    "signal": "SELL",
+    "price_usd": 571.419921875,
+    "price_idr": 10237559.3203125,
+    "last_check": "2026-06-12 16:25"
   },
   "TSLA": {
     "signal": "HOLD",
-    "price_usd": 399.1499938964844,
-    "price_idr": 7130814.640960693,
-    "last_check": "2026-06-12 12:56"
+    "price_usd": 392.6549987792969,
+    "price_idr": 7034806.958129883,
+    "last_check": "2026-06-12 16:25"
   },
   "BTC": {
     "signal": "SELL",
