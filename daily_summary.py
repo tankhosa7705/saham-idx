@@ -5,6 +5,7 @@ Dijalankan via GitHub Actions workflow daily_summary.yml.
 import json
 import logging
 import os
+import sys
 from datetime import datetime
 
 from config import TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, WATCH_LIST, DATA_PERIOD
@@ -108,6 +109,7 @@ def main():
 
     if not ok:
         logging.error("Gagal kirim ringkasan ke Telegram.")
+        sys.exit(1)  # workflow harus MERAH kalau pesan tidak terkirim
 
 
 if __name__ == '__main__':

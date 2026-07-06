@@ -3,6 +3,7 @@ Runner Pluang: sinyal emas, crypto, US stocks + portofolio + price targets.
 Dijalankan via GitHub Actions setiap jam.
 """
 import logging
+import sys
 from datetime import datetime
 
 from config import TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, PLUANG_WATCHLIST
@@ -44,26 +45,35 @@ def main():
     logging.info(f"Cek US stocks: {PLUANG_WATCHLIST['us_stocks']}")
     alerts += check_us_stocks(PLUANG_WATCHLIST['us_stocks'], usd_idr)
 
+    failed = 0
     for alert in alerts:
         msg = format_pluang_alert(alert)
         ok  = send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, msg)
+        if not ok:
+            failed += 1
         logging.info(f"[{alert['ticker']}] {alert['signal']} — {'terkirim' if ok else 'GAGAL'}")
 
     # Price targets
     triggered = check_price_targets(usd_idr)
     for t in triggered:
         msg = format_target_alert(t)
-        send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, msg)
+        if not send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, msg):
+            failed += 1
         logging.info(f"[Target] {t['ticker']} tercapai @ Rp {t['current_price']:,.0f}")
 
     # Ringkasan portfolio (sekali sehari jam 08:00 WIT)
     if now.hour == PORTFOLIO_HOUR_UTC:
         logging.info("Kirim ringkasan portfolio harian...")
         msg = format_portfolio_summary(usd_idr)
-        send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, msg)
+        if not send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, msg):
+            failed += 1
 
     if not alerts and not triggered:
         logging.info("Tidak ada sinyal baru.")
+
+    if failed:
+        logging.error(f"{failed} pesan gagal terkirim ke Telegram — workflow ditandai gagal.")
+        sys.exit(1)
 
 
 if __name__ == '__main__':

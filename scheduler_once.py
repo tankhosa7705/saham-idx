@@ -3,6 +3,7 @@ Versi one-shot scheduler — dijalankan via GitHub Actions setiap jam.
 Cek sinyal sekali lalu keluar.
 """
 import logging
+import sys
 from datetime import datetime
 
 from config import TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, WATCH_LIST, DATA_PERIOD
@@ -24,6 +25,7 @@ def main():
 
     logging.info(f"Cek {len(WATCH_LIST)} saham: {', '.join(WATCH_LIST)}")
 
+    failed = 0
     try:
         alerts = check_stocks(WATCH_LIST, DATA_PERIOD)
 
@@ -31,6 +33,8 @@ def main():
             for alert in alerts:
                 msg = format_alert(alert)
                 ok = send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, msg)
+                if not ok:
+                    failed += 1
                 logging.info(f"[{alert['ticker']}] {alert['signal']} — {'terkirim' if ok else 'GAGAL'}")
         else:
             logging.info("Tidak ada sinyal baru.")
@@ -39,6 +43,11 @@ def main():
         logging.error(f"Error: {e}")
         send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID,
                      f"⚠️ <b>Bot Error</b>\n{e}\n{datetime.utcnow().strftime('%d/%m/%Y %H:%M')} UTC")
+        sys.exit(1)
+
+    if failed:
+        logging.error(f"{failed} pesan gagal terkirim ke Telegram — workflow ditandai gagal.")
+        sys.exit(1)
 
 
 if __name__ == '__main__':

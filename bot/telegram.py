@@ -9,6 +9,8 @@ def send_message(token: str, chat_id: str, text: str) -> bool:
             'text': text,
             'parse_mode': 'HTML',
         }, timeout=10)
+        if r.status_code != 200:
+            print(f"[Telegram] HTTP {r.status_code}: {r.text[:300]}")
         return r.status_code == 200
     except Exception as e:
         print(f"[Telegram] Error: {e}")
