@@ -3,3 +3,5 @@ __pycache__/
 *.pyo
 bot/scheduler.log
 .env
+config_local.py
+bot.log

@@ -1,10 +1,16 @@
 import os
 
 # ── Telegram ─────────────────────────────────────────────────
-# Di Railway: set via environment variables
-# Di lokal: langsung isi di sini
-TELEGRAM_TOKEN   = os.environ.get('TELEGRAM_TOKEN',   '8766870329:AAHjjEnP3GD8hbEjNwyRXWHFS5-0Wzxsp9w')
-TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID', '8672645047')
+# JANGAN tulis token di file ini — repo PUBLIC, token yang ter-commit
+# otomatis dicabut Telegram (GitHub secret scanning). Token hanya boleh di:
+#   - GitHub Actions: Settings > Secrets (TELEGRAM_TOKEN, TELEGRAM_CHAT_ID)
+#   - Lokal: file config_local.py (di-gitignore)
+try:
+    from config_local import TELEGRAM_TOKEN as _LOCAL_TOKEN, TELEGRAM_CHAT_ID as _LOCAL_CHAT
+except ImportError:
+    _LOCAL_TOKEN = ''; _LOCAL_CHAT = ''
+TELEGRAM_TOKEN   = os.environ.get('TELEGRAM_TOKEN',   _LOCAL_TOKEN)
+TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID', _LOCAL_CHAT)
 
 # ── Saham yang dipantau ───────────────────────────────────────
 WATCH_LIST = [
