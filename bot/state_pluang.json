@@ -1,81 +1,81 @@
 {
   "XAUUSD": {
     "signal": "HOLD",
-    "price_usd_oz": 4168.7001953125,
-    "price_idr_gram": 2423069.1346972105,
-    "last_check": "2026-07-30 23:11"
+    "price_usd_oz": 4130.5,
+    "price_idr_gram": 2400068.3685115823,
+    "last_check": "2026-07-31 03:22"
   },
   "AAPL": {
     "signal": "BUY",
     "price_usd": 333.42999267578125,
-    "price_idr": 6028080.837585449,
-    "last_check": "2026-07-30 23:11"
+    "price_idr": 6026080.2576293945,
+    "last_check": "2026-07-31 03:22"
   },
   "MSFT": {
     "signal": "SELL",
     "price_usd": 451.1000061035156,
-    "price_idr": 8155437.010345459,
-    "last_check": "2026-07-30 23:11"
+    "price_idr": 8152730.410308838,
+    "last_check": "2026-07-31 03:22"
   },
   "NVDA": {
     "signal": "SELL",
     "price_usd": 195.0399932861328,
-    "price_idr": 3526128.038619995,
-    "last_check": "2026-07-30 23:11"
+    "price_idr": 3524957.7986602783,
+    "last_check": "2026-07-31 03:22"
   },
   "AMZN": {
     "signal": "SELL",
     "price_usd": 235.5,
-    "price_idr": 4257604.5,
-    "last_check": "2026-07-30 23:11"
+    "price_idr": 4256191.5,
+    "last_check": "2026-07-31 03:22"
   },
   "GOOGL": {
     "signal": "SELL",
     "price_usd": 333.6600036621094,
-    "price_idr": 6032239.206207275,
-    "last_check": "2026-07-30 23:11"
+    "price_idr": 6030237.246185303,
+    "last_check": "2026-07-31 03:22"
   },
   "META": {
     "signal": "HOLD",
     "price_usd": 539.030029296875,
-    "price_idr": 9745123.899658203,
-    "last_check": "2026-07-30 23:11"
+    "price_idr": 9741889.719482422,
+    "last_check": "2026-07-31 03:22"
   },
   "TSLA": {
     "signal": "SELL",
     "price_usd": 308.8500061035156,
-    "price_idr": 5583699.260345459,
-    "last_check": "2026-07-30 23:11"
+    "price_idr": 5581846.160308838,
+    "last_check": "2026-07-31 03:22"
   },
   "BTC": {
     "signal": "HOLD",
-    "price_usd": 64850.5890459869,
-    "price_idr": 1172433799.3623972,
-    "last_check": "2026-07-30 23:11"
+    "price_usd": 64290.89568705503,
+    "price_idr": 1161929357.7521455,
+    "last_check": "2026-07-31 03:22"
   },
   "ETH": {
     "signal": "HOLD",
-    "price_usd": 1926.056185878318,
-    "price_idr": 34821169.78449411,
-    "last_check": "2026-07-30 23:11"
+    "price_usd": 1905.655956942316,
+    "price_idr": 34440920.10981847,
+    "last_check": "2026-07-31 03:22"
   },
   "SOL": {
     "signal": "HOLD",
-    "price_usd": 74.67146362212374,
-    "price_idr": 1349985.390824375,
-    "last_check": "2026-07-30 23:11"
+    "price_usd": 74.13481706214563,
+    "price_idr": 1339838.548764158,
+    "last_check": "2026-07-31 03:22"
   },
   "BNB": {
     "signal": "HOLD",
-    "price_usd": 592.6608478491767,
-    "price_idr": 10714715.468265265,
-    "last_check": "2026-07-30 23:11"
+    "price_usd": 587.3580730241773,
+    "price_idr": 10615322.453765957,
+    "last_check": "2026-07-31 03:22"
   },
   "ADA": {
     "signal": "BUY",
-    "price_usd": 0.1696642104393446,
-    "price_idr": 3067.359260532911,
-    "last_check": "2026-07-30 23:11"
+    "price_usd": 0.17057701596068717,
+    "price_idr": 3082.838409457499,
+    "last_check": "2026-07-31 03:22"
   },
   "AVAX": {
     "signal": "HOLD",
