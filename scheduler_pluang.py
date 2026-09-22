@@ -8,9 +8,9 @@ from datetime import datetime
 
 from config import TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, PLUANG_WATCHLIST
 from bot.telegram import send_message
-from bot.alert_pluang import check_gold, check_crypto, check_us_stocks, format_pluang_alert
+from bot.alert_pluang import check_gold, check_crypto, check_us_stocks, format_pluang_alert, confirm_alert
 from bot.portfolio import format_portfolio_summary
-from bot.price_targets import check_price_targets, format_target_alert
+from bot.price_targets import check_price_targets, confirm_targets_sent, format_target_alert
 from data.fetcher_pluang import get_usd_idr
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s — %(message)s')
@@ -49,17 +49,25 @@ def main():
     for alert in alerts:
         msg = format_pluang_alert(alert)
         ok  = send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, msg)
-        if not ok:
+        if ok:
+            confirm_alert(alert['ticker'], alert['signal'])
+        else:
             failed += 1
         logging.info(f"[{alert['ticker']}] {alert['signal']} — {'terkirim' if ok else 'GAGAL'}")
 
     # Price targets
-    triggered = check_price_targets(usd_idr)
+    triggered, remaining_targets = check_price_targets(usd_idr)
+    sent_ok, not_sent = [], []
     for t in triggered:
         msg = format_target_alert(t)
-        if not send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, msg):
+        if send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, msg):
+            sent_ok.append(t)
+            logging.info(f"[Target] {t['ticker']} tercapai @ Rp {t['current_price']:,.0f}")
+        else:
             failed += 1
-        logging.info(f"[Target] {t['ticker']} tercapai @ Rp {t['current_price']:,.0f}")
+            not_sent.append(t)
+            logging.info(f"[Target] {t['ticker']} GAGAL kirim — dicoba lagi run berikutnya")
+    confirm_targets_sent(remaining_targets, sent_ok, not_sent)
 
     # Ringkasan portfolio (sekali sehari jam 08:00 WIT)
     if now.hour == PORTFOLIO_HOUR_UTC:

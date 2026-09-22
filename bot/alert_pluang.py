@@ -66,8 +66,9 @@ def check_gold(usd_idr: float) -> list:
             alert['price_idr_gram'] = price_idr_gram
             alerts.append(alert)
 
+        # Signal baru cuma tersimpan kalau tidak ada alert pending (lihat confirm_alert()).
         state['XAUUSD'] = {
-            'signal':        signal,
+            'signal':        alert['prev_signal'] if alert else signal,
             'price_usd_oz':  price_usd,
             'price_idr_gram': price_idr_gram,
             'last_check':    datetime.now().strftime('%Y-%m-%d %H:%M'),
@@ -101,7 +102,7 @@ def check_crypto(tickers: list, usd_idr: float) -> list:
                 alerts.append(alert)
 
             state[ticker] = {
-                'signal':     signal,
+                'signal':     alert['prev_signal'] if alert else signal,
                 'price_usd':  info.get('close', 0),
                 'price_idr':  info.get('close', 0) * usd_idr,
                 'last_check': datetime.now().strftime('%Y-%m-%d %H:%M'),
@@ -132,7 +133,7 @@ def check_us_stocks(tickers: list, usd_idr: float) -> list:
                 alerts.append(alert)
 
             state[ticker] = {
-                'signal':     signal,
+                'signal':     alert['prev_signal'] if alert else signal,
                 'price_usd':  info.get('close', 0),
                 'price_idr':  info.get('close', 0) * usd_idr,
                 'last_check': datetime.now().strftime('%Y-%m-%d %H:%M'),
@@ -141,6 +142,16 @@ def check_us_stocks(tickers: list, usd_idr: float) -> list:
             print(f"[US] Error {ticker}: {e}")
     _save_state(state)
     return alerts
+
+
+def confirm_alert(ticker: str, signal: str):
+    """Panggil SETELAH alert utk ticker ini berhasil terkirim ke Telegram, supaya
+    state maju ke signal baru. Kalau kirim gagal, JANGAN dipanggil — signal lama
+    tetap tersimpan sehingga alert yang sama dicoba lagi di run berikutnya."""
+    state = _load_state()
+    if ticker in state:
+        state[ticker]['signal'] = signal
+        _save_state(state)
 
 
 def format_pluang_alert(alert: dict) -> str:

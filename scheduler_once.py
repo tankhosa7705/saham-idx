@@ -8,7 +8,7 @@ from datetime import datetime
 
 from config import TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, WATCH_LIST, DATA_PERIOD
 from bot.telegram import send_message
-from bot.alert import check_stocks, format_alert
+from bot.alert import check_stocks, format_alert, confirm_alert
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s — %(message)s')
 
@@ -33,7 +33,9 @@ def main():
             for alert in alerts:
                 msg = format_alert(alert)
                 ok = send_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, msg)
-                if not ok:
+                if ok:
+                    confirm_alert(alert['ticker'], alert['signal'])
+                else:
                     failed += 1
                 logging.info(f"[{alert['ticker']}] {alert['signal']} — {'terkirim' if ok else 'GAGAL'}")
         else:

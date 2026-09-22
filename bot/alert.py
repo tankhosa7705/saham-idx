@@ -43,9 +43,10 @@ def check_stocks(tickers: list, period: str = '3mo') -> list:
 
             signal      = info.get('signal', 'HOLD')
             prev_signal = state.get(ticker, {}).get('signal', 'HOLD')
+            changed     = signal != prev_signal and signal in ('BUY', 'SELL')
 
             # Alert hanya saat sinyal berubah menjadi BUY atau SELL
-            if signal != prev_signal and signal in ('BUY', 'SELL'):
+            if changed:
                 alerts.append({
                     'ticker':      ticker,
                     'name':        IDX_STOCKS.get(ticker, ticker),
@@ -58,8 +59,12 @@ def check_stocks(tickers: list, period: str = '3mo') -> list:
                     'reasons':     info.get('reasons', []),
                 })
 
+            # Kalau sinyal baru saja berubah, JANGAN langsung timpa ke signal baru —
+            # tunggu confirm_alert() dipanggil caller setelah pesan Telegram sukses
+            # terkirim. Kalau kirim gagal, signal lama tetap tersimpan sehingga alert
+            # yang sama dicoba lagi di run berikutnya (bukan hilang diam-diam).
             state[ticker] = {
-                'signal':     signal,
+                'signal':     prev_signal if changed else signal,
                 'price':      info.get('close', 0),
                 'last_check': datetime.now().strftime('%Y-%m-%d %H:%M'),
             }
@@ -69,6 +74,15 @@ def check_stocks(tickers: list, period: str = '3mo') -> list:
 
     _save_state(state)
     return alerts
+
+
+def confirm_alert(ticker: str, signal: str):
+    """Panggil SETELAH alert utk ticker ini berhasil terkirim ke Telegram, supaya
+    state maju ke signal baru. Kalau kirim gagal, JANGAN dipanggil."""
+    state = _load_state()
+    if ticker in state:
+        state[ticker]['signal'] = signal
+        _save_state(state)
 
 
 def format_alert(alert: dict) -> str:

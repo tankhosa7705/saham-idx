@@ -49,11 +49,14 @@ def _current_price_idr(item: dict, usd_idr: float) -> float:
     return 0.0
 
 
-def check_price_targets(usd_idr: float) -> list:
-    """Kembalikan list target yang sudah tercapai, lalu hapus dari file."""
+def check_price_targets(usd_idr: float) -> tuple:
+    """Kembalikan (triggered, remaining). TIDAK menghapus apa pun di sini —
+    panggil confirm_targets_sent() setelah alert benar-benar terkirim, supaya
+    target yang gagal dikirim tidak langsung hilang permanen (dicoba lagi run
+    berikutnya, bukan dianggap sudah diberitahu)."""
     targets = load_targets()
     if not targets:
-        return []
+        return [], []
 
     triggered = []
     remaining = []
@@ -75,10 +78,17 @@ def check_price_targets(usd_idr: float) -> list:
         else:
             remaining.append(t)
 
-    if triggered:
-        save_targets(remaining)
+    return triggered, remaining
 
-    return triggered
+
+def confirm_targets_sent(remaining: list, sent_ok: list, not_sent: list):
+    """Panggil sekali di akhir setelah semua target 'triggered' dicoba kirim.
+    sent_ok dihapus permanen dari file; not_sent (gagal kirim) tetap disimpan
+    supaya dicoba lagi run berikutnya."""
+    if not sent_ok and not not_sent:
+        return
+    strip = lambda t: {k: v for k, v in t.items() if k != 'current_price'}
+    save_targets(remaining + [strip(t) for t in not_sent])
 
 
 def format_target_alert(t: dict) -> str:
