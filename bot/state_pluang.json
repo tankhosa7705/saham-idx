@@ -3,79 +3,79 @@
     "signal": "HOLD",
     "price_usd_oz": 4181.10009765625,
     "price_idr_gram": 2419657.0083049336,
-    "last_check": "2026-10-18 00:44"
+    "last_check": "2026-10-18 05:34"
   },
   "AAPL": {
     "signal": "BUY",
     "price_usd": 343.4599914550781,
     "price_idr": 6182279.846191406,
-    "last_check": "2026-10-18 00:44"
+    "last_check": "2026-10-18 05:34"
   },
   "MSFT": {
     "signal": "BUY",
     "price_usd": 529.0499877929688,
     "price_idr": 9522899.780273438,
-    "last_check": "2026-10-18 00:44"
+    "last_check": "2026-10-18 05:34"
   },
   "NVDA": {
     "signal": "HOLD",
     "price_usd": 214.1300048828125,
     "price_idr": 3854340.087890625,
-    "last_check": "2026-10-18 00:44"
+    "last_check": "2026-10-18 05:34"
   },
   "AMZN": {
     "signal": "HOLD",
     "price_usd": 250.0,
     "price_idr": 4500000.0,
-    "last_check": "2026-10-18 00:44"
+    "last_check": "2026-10-18 05:34"
   },
   "GOOGL": {
     "signal": "HOLD",
     "price_usd": 340.5899963378906,
     "price_idr": 6130619.934082031,
-    "last_check": "2026-10-18 00:44"
+    "last_check": "2026-10-18 05:34"
   },
   "META": {
     "signal": "HOLD",
     "price_usd": 709.3300170898438,
     "price_idr": 12767940.307617188,
-    "last_check": "2026-10-18 00:44"
+    "last_check": "2026-10-18 05:34"
   },
   "TSLA": {
     "signal": "HOLD",
     "price_usd": 354.7200012207031,
     "price_idr": 6384960.021972656,
-    "last_check": "2026-10-18 00:44"
+    "last_check": "2026-10-18 05:34"
   },
   "BTC": {
     "signal": "HOLD",
-    "price_usd": 81393.15941897623,
-    "price_idr": 1465076869.541572,
-    "last_check": "2026-10-18 00:44"
+    "price_usd": 81663.84937342572,
+    "price_idr": 1469949288.721663,
+    "last_check": "2026-10-18 05:34"
   },
   "ETH": {
     "signal": "HOLD",
-    "price_usd": 2400.0605102640343,
-    "price_idr": 43201089.18475262,
-    "last_check": "2026-10-18 00:44"
+    "price_usd": 2409.142366627683,
+    "price_idr": 43364562.59929829,
+    "last_check": "2026-10-18 05:34"
   },
   "SOL": {
     "signal": "HOLD",
-    "price_usd": 103.23972222436005,
-    "price_idr": 1858315.0000384809,
-    "last_check": "2026-10-18 00:44"
+    "price_usd": 103.43763931636427,
+    "price_idr": 1861877.5076945568,
+    "last_check": "2026-10-18 05:34"
   },
   "BNB": {
     "signal": "HOLD",
-    "price_usd": 717.0966542268668,
-    "price_idr": 12907739.776083602,
-    "last_check": "2026-10-18 00:44"
+    "price_usd": 719.3462390070097,
+    "price_idr": 12948232.302126175,
+    "last_check": "2026-10-18 05:34"
   },
   "ADA": {
     "signal": "HOLD",
-    "price_usd": 0.2194669134953171,
-    "price_idr": 3950.404442915708,
-    "last_check": "2026-10-18 00:44"
+    "price_usd": 0.21909230441421113,
+    "price_idr": 3943.6614794558004,
+    "last_check": "2026-10-18 05:34"
   },
   "AVAX": {
     "signal": "HOLD",
