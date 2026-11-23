@@ -1,102 +1,102 @@
 {
   "BBCA": {
     "signal": "HOLD",
-    "price": 5700.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 5675.0,
+    "last_check": "2026-11-23 16:18"
   },
   "BBRI": {
     "signal": "HOLD",
-    "price": 3090.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 3070.0,
+    "last_check": "2026-11-23 16:18"
   },
   "BMRI": {
     "signal": "HOLD",
-    "price": 3900.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 3880.0,
+    "last_check": "2026-11-23 16:18"
   },
   "TLKM": {
     "signal": "HOLD",
-    "price": 2060.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 2040.0,
+    "last_check": "2026-11-23 16:18"
   },
   "ASII": {
     "signal": "BUY",
-    "price": 5450.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 5400.0,
+    "last_check": "2026-11-23 16:18"
   },
   "UNVR": {
     "signal": "HOLD",
-    "price": 1535.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 1505.0,
+    "last_check": "2026-11-23 16:18"
   },
   "KLBF": {
     "signal": "BUY",
     "price": 775.0,
-    "last_check": "2026-11-23 05:24"
+    "last_check": "2026-11-23 16:18"
   },
   "ADRO": {
     "signal": "HOLD",
-    "price": 2350.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 2330.0,
+    "last_check": "2026-11-23 16:18"
   },
   "PTBA": {
     "signal": "SELL",
-    "price": 2980.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 2970.0,
+    "last_check": "2026-11-23 16:18"
   },
   "ANTM": {
     "signal": "HOLD",
     "price": 2670.0,
-    "last_check": "2026-11-23 05:24"
+    "last_check": "2026-11-23 16:18"
   },
   "BBNI": {
     "signal": "HOLD",
-    "price": 3560.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 3540.0,
+    "last_check": "2026-11-23 16:18"
   },
   "BRIS": {
     "signal": "HOLD",
-    "price": 1175.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 1185.0,
+    "last_check": "2026-11-23 16:18"
   },
   "PGAS": {
     "signal": "BUY",
     "price": 1520.0,
-    "last_check": "2026-11-23 05:24"
+    "last_check": "2026-11-23 16:18"
   },
   "BSDE": {
     "signal": "HOLD",
-    "price": 464.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 462.0,
+    "last_check": "2026-11-23 16:18"
   },
   "JPFA": {
     "signal": "HOLD",
-    "price": 1450.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 1410.0,
+    "last_check": "2026-11-23 16:18"
   },
   "MDKA": {
     "signal": "HOLD",
-    "price": 1810.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 1840.0,
+    "last_check": "2026-11-23 16:18"
   },
   "INCO": {
     "signal": "HOLD",
-    "price": 3380.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 3430.0,
+    "last_check": "2026-11-23 16:18"
   },
   "TOWR": {
     "signal": "HOLD",
-    "price": 382.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 380.0,
+    "last_check": "2026-11-23 16:18"
   },
   "ISAT": {
     "signal": "HOLD",
-    "price": 1390.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 1360.0,
+    "last_check": "2026-11-23 16:18"
   },
   "MAPI": {
     "signal": "HOLD",
-    "price": 1030.0,
-    "last_check": "2026-11-23 05:24"
+    "price": 1070.0,
+    "last_check": "2026-11-23 16:18"
   }
 }
